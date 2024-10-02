@@ -47,4 +47,5 @@ def log(file_name: str, text: str) -> None:
 ## Links
 
 - [Documentation](https://github.com/huang2002/fifo_folder/wiki)
-- [License (ISC)](LICENSE)
+- [Changelog](https://github.com/huang2002/fifo_folder/blob/main/CHANGELOG.md)
+- [License (ISC)](https://github.com/huang2002/fifo_folder/blob/main/LICENSE)
