@@ -1,0 +1,56 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fifo-folder"
+dynamic = ["version"]
+description = "A FIFO folder management library that manages files using queue-like principles."
+readme = "README.md"
+license = "ISC"
+requires-python = ">=3.12"
+authors = [{ name = "huang2002", email = "huanghaihua2002@qq.com" }]
+classifiers = [
+    "License :: OSI Approved :: ISC License (ISCL)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+]
+dependencies = []
+
+[project.scripts]
+
+[project.urls]
+Homepage = "https://github.com/huang2002/fifo_folder"
+
+[tool.hatch.version]
+path = "fifo_folder/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+packages = ["fifo_folder"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["fifo_folder"]
+
+[tool.pytest.ini_options]
+addopts = "-n 4 --dist=loadscope"
+
+[[tool.pydoc-markdown.loaders]]
+type = "python"
+search_path = ["fifo_folder"]
+ignore_when_discovered = ["__init__"]
+
+[[tool.pydoc-markdown.processors]]
+type = "filter"
+exclude_private = false
+skip_empty_modules = true
+
+[[tool.pydoc-markdown.processors]]
+type = "google"
+
+[tool.pydoc-markdown.renderer]
+type = "mkdocs"
+
+[[tool.pydoc-markdown.renderer.pages]]
+title = "API Documentation"
+name = "index"
+contents = ["*"]
