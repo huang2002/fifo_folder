@@ -8,6 +8,7 @@ doc:
 	pydoc-markdown && cp ./build/docs/content/*.md ./wiki/
 
 build:
+	rm dist/*
 	hatch build
 
 pub:
