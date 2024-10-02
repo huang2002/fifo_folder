@@ -52,5 +52,5 @@ type = "mkdocs"
 
 [[tool.pydoc-markdown.renderer.pages]]
 title = "API Documentation"
-name = "index"
+name = "Home"
 contents = ["*"]
