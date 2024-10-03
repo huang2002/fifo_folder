@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Iterable
 from typing import NamedTuple, Self
 
-from .utils import SupportsGreaterThan
+from .utils import SupportsComparison
 
 __all__ = [
     "FIFOItem",
@@ -10,7 +10,7 @@ __all__ = [
 ]
 
 
-class FIFOItem[DataType, KeyType: SupportsGreaterThan](NamedTuple):
+class FIFOItem[DataType, KeyType: SupportsComparison](NamedTuple):
     """Item class used in [FIFOManager](#fifomanager-objects).
 
     Attributes:
@@ -21,7 +21,7 @@ class FIFOItem[DataType, KeyType: SupportsGreaterThan](NamedTuple):
     key: KeyType
 
 
-class FIFOManager[DataType, KeyType: SupportsGreaterThan](ABC):
+class FIFOManager[DataType, KeyType: SupportsComparison](ABC):
     """Base class for FIFO managers.
 
     Subclasses must implement the following methods:

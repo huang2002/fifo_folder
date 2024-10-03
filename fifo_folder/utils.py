@@ -1,9 +1,10 @@
 from typing import Any, Protocol
 
 __all__ = [
-    "SupportsGreaterThan",
+    "SupportsComparison",
 ]
 
 
-class SupportsGreaterThan(Protocol):
+class SupportsComparison(Protocol):
     def __gt__(self, other: Any, /) -> bool: ...
+    def __lt__(self, other: Any, /) -> bool: ...
