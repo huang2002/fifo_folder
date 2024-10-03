@@ -52,18 +52,22 @@ class FIFOManager[DataType, KeyType: SupportsComparison](ABC):
     @abstractmethod
     def _get_data(self) -> Iterable[DataType]:
         """Get data to manage."""
+        raise NotImplementedError()
 
     @abstractmethod
     def _get_key(self, data: DataType) -> KeyType:
         """Get custom key to specific data."""
+        raise NotImplementedError()
 
     @abstractmethod
     def _get_extra_count(self) -> int:
         """Get count of extra items to remove."""
+        raise NotImplementedError()
 
     @abstractmethod
     def _remove_item(self, item: FIFOItem[DataType, KeyType]) -> None:
         """Remove specific item."""
+        raise NotImplementedError()
 
     def load_items(self) -> Self:
         """Load all data to manage (without invoking `self.manage()`)."""
