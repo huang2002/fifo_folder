@@ -34,7 +34,7 @@ packages = ["fifo_folder"]
 packages = ["fifo_folder"]
 
 [tool.pytest.ini_options]
-addopts = "-n 4 --dist=loadscope"
+addopts = "-n 8 --dist=loadscope"
 
 [[tool.pydoc-markdown.loaders]]
 type = "python"
