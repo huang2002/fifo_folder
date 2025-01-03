@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 from pathlib import Path
 
@@ -38,9 +39,14 @@ def test_sort_key_default(test_path: Path) -> None:
     fifo_folder = FIFOFolder(test_path)
     fifo_folder.load_items()
     assert len(fifo_folder.items) == 3
-    assert os.path.basename(fifo_folder.items[0].data.path) == "1.txt"
-    assert os.path.basename(fifo_folder.items[1].data.path) == "2.txt"
-    assert os.path.basename(fifo_folder.items[2].data.path) == "0.txt"
+    if sys.platform == "win32":
+        assert os.path.basename(fifo_folder.items[0].data.path) == "1.txt"
+        assert os.path.basename(fifo_folder.items[1].data.path) == "2.txt"
+        assert os.path.basename(fifo_folder.items[2].data.path) == "0.txt"
+    else:
+        assert os.path.basename(fifo_folder.items[0].data.path) == "2.txt"
+        assert os.path.basename(fifo_folder.items[1].data.path) == "1.txt"
+        assert os.path.basename(fifo_folder.items[2].data.path) == "0.txt"
 
 
 def test_sort_key_path(test_path: Path) -> None:
@@ -53,12 +59,28 @@ def test_sort_key_path(test_path: Path) -> None:
 
 
 def test_sort_key_birthtime(test_path: Path) -> None:
+    if "birthtime" not in dir(os.stat_result):
+        pytest.skip("birthtime not available on os.stat_result")
     fifo_folder = FIFOFolder(test_path, sort_key="birthtime")
     fifo_folder.load_items()
     assert len(fifo_folder.items) == 3
     assert os.path.basename(fifo_folder.items[0].data.path) == "1.txt"
     assert os.path.basename(fifo_folder.items[1].data.path) == "2.txt"
     assert os.path.basename(fifo_folder.items[2].data.path) == "0.txt"
+
+
+def test_sort_key_ctime(test_path: Path) -> None:
+    fifo_folder = FIFOFolder(test_path, sort_key="ctime")
+    fifo_folder.load_items()
+    assert len(fifo_folder.items) == 3
+    if sys.platform == "win32":
+        assert os.path.basename(fifo_folder.items[0].data.path) == "1.txt"
+        assert os.path.basename(fifo_folder.items[1].data.path) == "2.txt"
+        assert os.path.basename(fifo_folder.items[2].data.path) == "0.txt"
+    else:
+        assert os.path.basename(fifo_folder.items[0].data.path) == "2.txt"
+        assert os.path.basename(fifo_folder.items[1].data.path) == "1.txt"
+        assert os.path.basename(fifo_folder.items[2].data.path) == "0.txt"
 
 
 def test_sort_key_mtime(test_path: Path) -> None:

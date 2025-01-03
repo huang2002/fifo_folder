@@ -1,6 +1,6 @@
 import os
 from collections.abc import Iterable
-from math import inf
+from math import inf, nan
 from typing import Literal, NamedTuple, override
 
 from .FIFOManager import FIFOItem, FIFOManager
@@ -19,18 +19,28 @@ class FileData(NamedTuple):
     Attributes:
         path (str): Absolute path to the file.
         birthtime (float): The birth time of the file.
+        ctime (float): The creation time of the file.
         mtime (float): The last modification time of the file.
         atime (float): The last access time of the file.
         size (int): The size of the file in bytes.
     """
+
     path: str
     birthtime: float
+    ctime: float
     mtime: float
     atime: float
     size: int
 
 
-type FileSortKey = Literal["path", "birthtime", "mtime", "atime", "size"]
+type FileSortKey = Literal[
+    "path",
+    "birthtime",
+    "ctime",
+    "mtime",
+    "atime",
+    "size",
+]
 """Available sort keys for use in [FIFOFolder](#fifofolder-objects)."""
 
 type FileKey = str | int | float
@@ -40,7 +50,8 @@ def _create_file_data(path: str) -> FileData:
     stat_result = os.stat(path)
     return FileData(
         path=path,
-        birthtime=stat_result.st_birthtime,
+        birthtime=getattr(stat_result, "st_birthtime", nan),
+        ctime=stat_result.st_ctime,
         mtime=stat_result.st_mtime,
         atime=stat_result.st_atime,
         size=stat_result.st_size,
@@ -56,7 +67,7 @@ class FIFOFolder(FIFOManager[FileData, FileKey]):
         base_path (os.PathLike | str): \
             Path to the folder to manage.
         sort_key (FileSortKey, optional): \
-            Key to sort files by. (Default: `"birthtime"`)
+            Key to sort files by. (Default: `"ctime"`)
         count_limit (int | float, optional): \
             Limit of files to keep. (Default: `inf`)
         total_size_limit (int | float, optional): \
@@ -94,7 +105,7 @@ class FIFOFolder(FIFOManager[FileData, FileKey]):
         self,
         base_path: os.PathLike | str,
         *,
-        sort_key: FileSortKey = "birthtime",
+        sort_key: FileSortKey = "ctime",
         count_limit: int | float = inf,
         total_size_limit: int | float = inf,
         sort_key_limit: FileKey | None = None,
@@ -130,9 +141,7 @@ class FIFOFolder(FIFOManager[FileData, FileKey]):
         sort_key_limit = self.sort_key_limit
         sort_reverse = self.sort_reverse
         type_sort_limit = (
-            type(sort_key_limit)
-            if sort_key_limit is not None
-            else None
+            type(sort_key_limit) if sort_key_limit is not None else None
         )
         total_size = 0
         for i, item in enumerate(self.items):

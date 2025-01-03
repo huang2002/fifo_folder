@@ -24,7 +24,7 @@ def test_path(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Path:
 
 
 def test_sort_reverse_default(test_path: Path) -> None:
-    fifo_folder = FIFOFolder(test_path, sort_key="birthtime")
+    fifo_folder = FIFOFolder(test_path, sort_key="ctime")
     fifo_folder.load_items()
     assert len(fifo_folder.items) == 3
     assert os.path.basename(fifo_folder.items[0].data.path) == "1.txt"
@@ -35,7 +35,7 @@ def test_sort_reverse_default(test_path: Path) -> None:
 def test_sort_reverse_true(test_path: Path) -> None:
     fifo_folder = FIFOFolder(
         test_path,
-        sort_key="birthtime",
+        sort_key="ctime",
         sort_reverse=True,
     )
     fifo_folder.load_items()
@@ -48,7 +48,7 @@ def test_sort_reverse_true(test_path: Path) -> None:
 def test_sort_reverse_false(test_path: Path) -> None:
     fifo_folder = FIFOFolder(
         test_path,
-        sort_key="birthtime",
+        sort_key="ctime",
         sort_reverse=False,
     )
     fifo_folder.load_items()
