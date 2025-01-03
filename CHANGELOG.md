@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0
+
+- Add `ctime` to `FIFOFolder` and platform specific handling of stat_result.
+
 ## 0.2.0
 
 - Add `filter_function` to `FIFOManager`.
