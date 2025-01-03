@@ -8,7 +8,7 @@ doc:
 	pydoc-markdown && cp ./build/docs/content/*.md ./wiki/
 
 build:
-	rm dist/*
+	if [ -d ./dist/ ]; then rm ./dist/*; fi
 	hatch build
 
 pub:
